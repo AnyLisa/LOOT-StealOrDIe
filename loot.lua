@@ -33,6 +33,8 @@ local COLORS = {
     SurfaceHover = Color3.fromRGB(42, 30, 32),
     Border = Color3.fromRGB(60, 38, 40),
 
+    White = Color3.fromRGB(255, 255, 255),
+
     Accent = Color3.fromRGB(255, 0, 0),
     AccentDark = Color3.fromRGB(190, 0, 0),
 
@@ -216,19 +218,6 @@ local closeButton = create("TextButton", {
 
 corner(closeButton, 7)
 
-closeButton.MouseEnter:Connect(function()
-    tween(closeButton, 0.15, {
-        BackgroundColor3 = COLORS.Error,
-        TextColor3 = Color3.new(1, 1, 1),
-    })
-end)
-
-closeButton.MouseLeave:Connect(function()
-    tween(closeButton, 0.15, {
-        BackgroundColor3 = COLORS.Surface,
-        TextColor3 = COLORS.Muted,
-    })
-end)
 
 -- DIVIDER
 create("Frame", {
@@ -322,8 +311,8 @@ local submit = create("TextButton", {
     Size = UDim2.new(1, -44, 0, 39),
     BackgroundColor3 = COLORS.Accent,
     BorderSizePixel = 0,
-    Text = "VERIFY LICENSE     →",
-    TextColor3 = COLORS.Background,
+    Text = "VERIFY LICENSE",
+    TextColor3 = COLORS.White,
     TextSize = 12,
     Font = FONT_BOLD,
     AutoButtonColor = false,
@@ -335,17 +324,8 @@ submit.MouseEnter:Connect(function()
     if not submit.Active then
         return
     end
-
-    tween(submit, 0.15, {
-        BackgroundColor3 = Color3.fromRGB(215, 255, 125),
-    })
 end)
 
-submit.MouseLeave:Connect(function()
-    tween(submit, 0.15, {
-        BackgroundColor3 = COLORS.Accent,
-    })
-end)
 
 -- STATUS
 local statusDot = create("Frame", {
@@ -480,14 +460,17 @@ local function decodeError(response)
     return "Server request failed."
 end
 
+-- LICENSE VALIDATION
+local busy = false
+
 local function resetButton()
     busy = false
     submit.Active = true
-    submit.Text = "VERIFY LICENSE     →"
+    submit.AutoButtonColor = false
+    submit.Text = "VERIFY LICENSE"
+    submit.BackgroundColor3 = COLORS.Accent
+    submit.TextColor3 = COLORS.White
 end
-
--- LICENSE VALIDATION
-local busy = false
 
 submit.Activated:Connect(function()
     if busy or closing then
@@ -536,19 +519,17 @@ submit.Activated:Connect(function()
 
     local statusCode = tonumber(response.StatusCode or response.Status)
 
-    if statusCode ~= 200 or type(response.Body) ~= "string" then
+    if statusCode ~= 200 then
         setStatus(decodeError(response), COLORS.Error)
         resetButton()
         return
     end
 
-    if response.Body == "" then
+    if type(response.Body) ~= "string" or response.Body == "" then
         setStatus("EMPTY SCRIPT RESPONSE", COLORS.Error)
         resetButton()
         return
     end
-
-    setStatus("LICENSE ACCEPTED  /  LOADING", COLORS.Success)
 
     local compileOk, loadedFunction = pcall(function()
         return loadstring(response.Body)
@@ -560,7 +541,8 @@ submit.Activated:Connect(function()
         return
     end
 
-    -- Close the UI before running the downloaded script.
+    setStatus("LICENSE ACCEPTED / LOADING", COLORS.Success)
+
     closeWindow()
 
     local runOk, runError = pcall(loadedFunction)
