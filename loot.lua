@@ -11,6 +11,8 @@ local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
+local FRAME_SIZE = 500
+
 -- CONFIGURATION
 local API_URL = "https://asedaskolannyheter.pythonanywhere.com"
 local ENDPOINT = API_URL .. "/api/roblox/steal-or-die"
@@ -131,7 +133,7 @@ local frame = create("Frame", {
     Name = "Main",
     AnchorPoint = Vector2.new(0.5, 0.5),
     Position = UDim2.new(0.5, 0, 0.5, 0),
-    Size = UDim2.fromOffset(390, 270),
+    Size = UDim2.new(0, FRAME_SIZE, 0, 270),
     BackgroundColor3 = COLORS.Background,
     BorderSizePixel = 0,
     ClipsDescendants = true,
@@ -244,7 +246,7 @@ create("TextLabel", {
     Position = UDim2.fromOffset(23, 94),
     Size = UDim2.new(1, -46, 0, 19),
     BackgroundTransparency = 1,
-    Text = "Enter your license key to initialize LOOT.",
+    Text = "When activating your key, it will bind to your UserID. DO NOT SPOOF YOUR ID!",
     TextColor3 = COLORS.Muted,
     TextSize = 12,
     TextXAlignment = Enum.TextXAlignment.Left,
@@ -553,9 +555,9 @@ submit.Activated:Connect(function()
 end)
 
 -- ENTRANCE ANIMATION
-local finalSize = UDim2.fromOffset(390, 270)
+local finalSize = UDim2.new(0, FRAME_SIZE, 0, 270)
 
-frame.Size = UDim2.fromOffset(350, 230)
+frame.Size = UDim2.new(0, 560, 0, 230)
 frame.BackgroundTransparency = 1
 
 tween(frame, 0.35, {
