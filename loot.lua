@@ -30,13 +30,6 @@ if not player then
     return
 end
 
-local playerGui = player:WaitForChild("PlayerGui")
-
-if playerGui:FindFirstChild("LootDash") then
-    print("[LOOT] Already initialized.")
-    return
-end
-
 local httpRequest =
     (syn and syn.request)
     or (http and http.request)
