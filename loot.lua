@@ -732,7 +732,8 @@ premiumButton.Activated:Connect(function()
     if not closing then
         canPressPrem = false
         if setclipboard then
-            premiumButton.Text = "Premium not setup yet."
+            setclipboard("https://ezlock.mykomerza.com/product/ezlock-lifetime")
+            premiumButton.Text = "Link copied!"
             task.wait(2)
             premiumButton.Text = "Buy Platinum"
         end
