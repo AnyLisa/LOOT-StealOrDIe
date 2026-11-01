@@ -1,10 +1,9 @@
 
 --[[
     LOOT // LICENSE SYSTEM
-    Game: [UP] Just a baseplate.
+    Game: Steal Or Die.
     Black / Red Theme
     Image placeholder | Draggable | Rounded UI
-    PythonAnywhere API validation
 ]]
 
 local Players = game:GetService("Players")
@@ -21,7 +20,7 @@ local API_URL = "https://asedaskolannyheter.pythonanywhere.com"
 local ENDPOINT = API_URL .. "/api/roblox/steal-or-die"
 
 -- Replace 0 with your Roblox image asset ID when ready.
-local IMAGE_ID = "rbxassetid://0"
+local IMAGE_ID = "rbxthumb://type=Asset&id=101465221898914&w=420&h=420"
 
 local player = Players.LocalPlayer
 
@@ -215,7 +214,7 @@ create("TextLabel", {
     Position = UDim2.new(0, 20, 1, -29),
     Size = UDim2.new(1, -30, 0, 14),
     BackgroundTransparency = 1,
-    Text = "LOOT SYSTEM",
+    Text = "MENU",
     TextColor3 = C.Muted,
     TextSize = 9,
     TextXAlignment = Enum.TextXAlignment.Left,
